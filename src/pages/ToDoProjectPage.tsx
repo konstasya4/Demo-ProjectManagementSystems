@@ -1,7 +1,11 @@
+import Header from '../components/header/Header'
 import { ToDoProject } from '../components/ToDoProject'
 
 const ToDoProjectPage = () => {
-  return <ToDoProject />
+  return (<div>
+    <Header/>
+    <ToDoProject />
+    </div>)
 }
 
 export default ToDoProjectPage

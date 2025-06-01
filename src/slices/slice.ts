@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-import { initialState } from '../sources/initialState.ts'
+import { initialState } from '../sources/initialState'
+import { dataReducers } from './reducers/dataReducers'
 // import { dataReducers } from './reducers/dataReducers.ts'
 // import { loadingReducers } from './reducers/loadingReducers.ts'
 // import { valuesReducers } from './reducers/valuesReducers.ts'
@@ -10,7 +11,7 @@ const slice = createSlice({
   name: 'slice',
   initialState: initialState,
   reducers: {
-    // ...dataReducers,
+    ...dataReducers,
     // ...loadingReducers,
     // ...valuesReducers,
     // ...nsiReducers,
@@ -18,6 +19,9 @@ const slice = createSlice({
 })
 
 export const {
+  setBoardsData,
+  setItemBoardData,
+  setIssuesData
 //   setData,
 //   setMainFormValues,
 //   startLoading,
@@ -34,3 +38,4 @@ export const {
 } = slice.actions
 
 export default slice.reducer
+// export {}
