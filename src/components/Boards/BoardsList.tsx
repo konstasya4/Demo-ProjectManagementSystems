@@ -19,7 +19,7 @@ type BoardsListProps = {
 
   const handleChange= (id:number) => {
     navigate(`${paths.toDoProject}/${id}`)
-    dispatch(setItemBoardData(data[id]))
+    dispatch(setItemBoardData(data[id-1]))
   }
 
   return (

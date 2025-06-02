@@ -5,7 +5,7 @@ const apiUrls = {
     createIssue:()=> apiUrls.issues.main + '/create',
     updateIssue:(taskId:number)=> apiUrls.issues.main + `/update/${taskId}`,
     updateStatusIssue:(taskId:number)=> apiUrls.issues.main + `/updateStatus/${taskId}`,
-    itemIssue:(taskId:number)=>apiUrls.issues.main + `${taskId}`,
+    itemIssue:(taskId:number)=>apiUrls.issues.main + `/${taskId}`,
   },
   boards: {
     main: '/boards',
@@ -15,7 +15,7 @@ const apiUrls = {
     teams:{
       main:'/teams',
       allTeams:()=>apiUrls.teams.main,
-      itemTeam:(teamId:number)=>apiUrls.teams.main+`${teamId}`
+      itemTeam:(teamId:number)=>apiUrls.teams.main+`/${teamId}`
     },
     users:{
       main:'/users',

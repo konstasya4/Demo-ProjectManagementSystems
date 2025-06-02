@@ -1,11 +1,13 @@
-import apiUrls from '../apiUrls'
-import axiosInstance from '../axiosInstance'
+import { NewIssues } from "../../../types/types";
+import apiUrls from "../apiUrls";
+import axiosInstance from "../axiosInstance";
 
-const  updateIssue = async (params:string, id:number) => {
-  const { data } = await axiosInstance.put(apiUrls.issues.updateIssue(id), {
-    params,
-  })
-  return data
-}
+const updateIssue = async (id: number, params: NewIssues) => {
+  const { data } = await axiosInstance.put(
+    apiUrls.issues.updateIssue(id),
+    params
+  );
+  return data;
+};
 
-export default updateIssue
+export default updateIssue;

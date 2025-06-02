@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react"
 import { getAllBoards } from "../../shared/api"
-import { BoardsListProps, DataBoards } from "../../types/types"
+import { DataBoards } from "../../types/types"
 import BoardsList from "./BoardsList"
 import { useDispatch } from "react-redux";
-import { setBoardsData } from "../../slices/slice";
+import { setBoardsData, setItemBoardData } from "../../slices/slice";
+import { initialState } from "../../sources/initialState";
 
 
 
@@ -15,13 +16,13 @@ const Main = () =>{
       getAllBoards()
         .then((res) => {
             setData(res.data)
-            if (data) dispatch(setBoardsData(data))}
+            if (res) dispatch(setBoardsData(res.data))}
         )
         .catch((err) => {
           console.error("Ошибка", err);
-          setData([]);
         });
     }, []);
+    dispatch(setItemBoardData(initialState.dataBoards.itemBoardData))
   
     return <BoardsList data={data} />;
   };
