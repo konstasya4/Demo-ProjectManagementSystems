@@ -59,7 +59,7 @@ const ToDoProjectBoard = ({ tasks }: IssuesTasksProps) => {
     const taskId = Number(draggableId);
     const newStatus = COLUMN_STATUSES[destination.droppableId]?.status;
     if (!newStatus) return;
-
+    const controller = new AbortController();
     try {
       await updateStatusIssue(taskId, newStatus);
       const updatedTasks = tasks.map((task) =>
@@ -69,6 +69,7 @@ const ToDoProjectBoard = ({ tasks }: IssuesTasksProps) => {
     } catch (error) {
       console.error("Ошибка обновления статуса", error);
     }
+    return () => controller.abort();
   };
 
   return (

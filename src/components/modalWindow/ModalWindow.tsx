@@ -2,16 +2,18 @@ import React, { useEffect, useState } from "react";
 import {
   Dialog, DialogTitle, DialogContent, DialogActions,
   Button, TextField, FormControl, InputLabel, Select,
-  MenuItem, Box, FormHelperText, Link
+  MenuItem, Box, FormHelperText,
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 
 import { State, NewIssues } from "../../types/types";
 import { validateForm, FormErrors, getInitialValues } from "../../helpers/formHelpers";
-import { setUsersData, setDataFormsIssue } from "../../slices/slice";
+import { setUsersData, setDataFormsIssue, setItemBoardData } from "../../slices/slice";
 import { COLUMN_STATUSES, PRIORITIES } from "../../constants/constants";
-import { createIssues, getAllUsers, updateIssue } from "../../shared/api";
+import { getAllUsers } from "../../shared/api";
 import { saveTask } from "../../helpers/tasksSaved";
+import { useNavigate } from "react-router-dom";
+import paths from "../../constants/routes/paths";
 
 interface TaskModalProps {
   open: boolean;
@@ -23,6 +25,7 @@ interface TaskModalProps {
 
 export default function TaskModal({ open, onClose, taskId, currentBoardId, onSaveSuccess }: TaskModalProps) {
   const dispatch = useDispatch();
+  const navigate = useNavigate()
 
   const boards = useSelector((state: State) => state.dataBoards.boardsData);
   const users = useSelector((state: State) => state.dataUsers);
@@ -35,6 +38,7 @@ export default function TaskModal({ open, onClose, taskId, currentBoardId, onSav
   });
 
   useEffect(() => {
+    const controller = new AbortController();
     if (open) {
       getAllUsers()
       .then((res)=>{
@@ -42,6 +46,7 @@ export default function TaskModal({ open, onClose, taskId, currentBoardId, onSav
       })
       .catch((e)=>console.error(e))
     }
+    return () => controller.abort();
   }, [open, dispatch]);
 
   useEffect(() => {
@@ -54,6 +59,11 @@ export default function TaskModal({ open, onClose, taskId, currentBoardId, onSav
     }
     setErrors({ title: false, description: false, boardId: false, status: false, priority: false, assigneeId: false });
   }, [open, itemIssue, taskId, currentBoardId, boards]);
+
+  const openBoard = (id:number) => {
+    navigate(`${paths.toDoProject}/${id}`)
+    dispatch(setItemBoardData(boards[id-1]))
+  }
 
   const handleChange = <K extends keyof NewIssues>(field: K, value: NewIssues[K]) => {
     setFormValues(prev => ({ ...prev, [field]: value }));
@@ -86,7 +96,7 @@ export default function TaskModal({ open, onClose, taskId, currentBoardId, onSav
   return (
     <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
       <DialogTitle>{taskId ? "Редактирование задачи" : "Создание задачи"}</DialogTitle>
-      <DialogContent>
+      <DialogContent sx={{pb: 0}}>
         <Box sx={{ display: "grid", gap: 2, mt: 1 }}>
           <TextField label="Название" fullWidth
             value={formValues.title}
@@ -154,11 +164,9 @@ export default function TaskModal({ open, onClose, taskId, currentBoardId, onSav
             {errors.assigneeId && <FormHelperText>Укажите исполнителя</FormHelperText>}
           </FormControl>
 
-          {!currentBoardId && taskId && itemIssue && (
+          {!currentBoardId && taskId && itemIssue && formValues.boardId &&(
             <Box sx={{ mt: 1 }}>
-              <Link href={`/board/${boards.find(b => b.name === itemIssue.boardName)?.id}`}>
-                Перейти на доску
-              </Link>
+              <Button onClick={()=>openBoard(formValues.boardId ?? 0)}>Перейти на доску</Button>
             </Box>
           )}
         </Box>

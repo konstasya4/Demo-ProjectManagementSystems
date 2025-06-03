@@ -20,7 +20,7 @@ export async function saveTask(
     priority: formValues.priority,
     title: formValues.title.trim(),
   };
-console.log(payloadCreate)
+
   if (taskId) {
     await updateIssue(taskId, payloadUpdate);
   } else {

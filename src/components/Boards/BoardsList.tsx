@@ -23,10 +23,16 @@ type BoardsListProps = {
   }
 
   return (
-      <List>
+      <List sx={{
+        display: "flex",
+        gap: 2,
+        alignItems: "center",
+        mb: 3,
+        flexWrap: "wrap",
+      }}>
         {data.map((board) => (
-          <ListItem key={board.id} divider className="list-item">
-            <ListItemText
+          <ListItem key={board.id} divider className="list-item" >
+            <ListItemText 
               primary={board.name}
             />
             <Button onClick={()=>handleChange(board.id)}>Перейти к доске</Button>

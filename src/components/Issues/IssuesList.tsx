@@ -1,13 +1,12 @@
-import { DataProjectIssue, State } from "../../types/types";
+import { DataProjectIssue } from "../../types/types";
 import {
-  Button,
   CircularProgress,
   List,
   ListItem,
   ListItemText,
   Typography,
 } from "@mui/material";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch} from "react-redux";
 import { setItemIssuesData } from "../../slices/slice";
 import TaskModal from "../modalWindow/ModalWindow";
 import { useState } from "react";
@@ -22,10 +21,6 @@ const IssuesList = ({ data }: IssuesListProps) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedTaskId, setSelectedTaskId] = useState<number | undefined>(
     undefined
-  );
-
-  const selectedBoard = useSelector(
-    (state: State) => state.dataBoards.itemBoardData
   );
 
   if (!data) return <CircularProgress />;
@@ -52,7 +47,13 @@ const IssuesList = ({ data }: IssuesListProps) => {
 
   return (
     <>
-      <List>
+      <List sx={{
+        display: "flex",
+        gap: 2,
+        alignItems: "center",
+        mb: 3,
+        flexWrap: "wrap",
+      }}>
         {data.map((task) => (
           <ListItem
             key={task.id}
@@ -60,7 +61,7 @@ const IssuesList = ({ data }: IssuesListProps) => {
             className="list-item"
             onClick={() => openTaskModal(task.id)}
           >
-            <ListItemText primary={task.title} />
+            <ListItemText primary={task.title} secondary={`Исполнитель: ${task.assignee.fullName}`}/>
           </ListItem>
         ))}
       </List>
@@ -75,4 +76,4 @@ const IssuesList = ({ data }: IssuesListProps) => {
   );
 };
 
-export default IssuesList;
+export default IssuesList
